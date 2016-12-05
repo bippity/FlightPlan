@@ -88,8 +88,23 @@ public class Manager
 		mainList.get(index).add(departCity);
 	}
 	
-	public boolean findPaths(String pathRequest)
+	public boolean findPaths(String path)
 	{
+		String[] args = path.split("\\|");
+		if (args.length == 3)
+		{
+			String departName = args[0];
+			String destName = args[1];
+			String type = args[2];
+			if (!type.equals("T") || !type.equals("C"))
+				return false;
+			
+			City departCity = new City(departName, 0, 0); //Departing city has no cost
+			City destCity = new City(destName, cost, time);
+			
+			return true;
+		}
+		
 		return false;
 	}
 	

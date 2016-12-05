@@ -27,12 +27,27 @@ public class FlightPlan
 				String s = scan.nextLine();
 				if (!mgr.addPath(s))
 				{
+					scan.close();
 					throw new Exception("[Error] Something is wrong with the FlightDataFile.");
 				}
 			}
 			scan.close();
 			
-			mgr.displayList();
+			mgr.displayList(); //debug
+			
+			scan = new Scanner(pathsFile);
+			count = scan.nextInt();
+			scan.nextLine();
+			for (int i = 0; i < count; i++)
+			{
+				String s = scan.nextLine();
+				if (!mgr.findPaths(s))
+				{
+					scan.close();
+					throw new Exception("[Error] Something is wrong with the PathsToCalculateFile.");
+				}
+			}
+			scan.close();
 		}
 		catch (Exception e) 
 		{
