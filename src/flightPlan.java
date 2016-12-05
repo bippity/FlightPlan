@@ -6,24 +6,37 @@ public class FlightPlan
 {
 	public static void main(String[] args) 
 	{
-		if (args.length == 3)
+		if (args.length != 3)
 		{
-			try 
-			{
-				Scanner scan = new Scanner(System.in);
-				File inputFile = new File(args[0]);
-				File pathsFile = new File(args[1]);
-				File outputFile = new File(args[2]);
-				scan.close();
-			} catch (Exception e) 
-			{
-				System.out.println(e.toString());
-			}
-		}
-		else
-		{
-			System.out.println("Correct Syntax: ./flightPlan <FlightDataFile> <PathsToCaculateFile> <OutputFile>");
+			System.out.println("Correct Syntax: ./flightPlan <FlightDataFile> <PathsToCalculateFile> <OutputFile>");
 			return;
+		}
+		try 
+		{
+			File inputFile = new File(args[0]);
+			File pathsFile = new File(args[1]);
+			File outputFile = new File(args[2]);
+			
+			Manager mgr = new Manager();
+			
+			Scanner scan = new Scanner(inputFile);
+			int count = scan.nextInt();
+			scan.nextLine();
+			for (int i = 0; i < count; i++)
+			{
+				String s = scan.nextLine();
+				if (!mgr.addPath(s))
+				{
+					throw new Exception("[Error] Something is wrong with the FlightDataFile.");
+				}
+			}
+			scan.close();
+			
+			mgr.displayList();
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
 		}
 	}
 }
