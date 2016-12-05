@@ -5,11 +5,11 @@ import java.util.*;
 
 public class Manager
 {
-	Stack<String> backtrack;
+	Stack<City> history;
 	LinkedList<LinkedList<City>> mainList;
 	public Manager()
 	{
-		backtrack= new Stack<String>();
+		history = new Stack<City>();
 		mainList = new LinkedList<LinkedList<City>>();
 	}
 	
@@ -88,7 +88,7 @@ public class Manager
 		mainList.get(index).add(departCity);
 	}
 	
-	public boolean findPaths(String path)
+	public boolean findPaths(String path) //Search backwards. Start from destination.
 	{
 		String[] args = path.split("\\|");
 		if (args.length == 3)
@@ -99,14 +99,38 @@ public class Manager
 			if (!type.equals("T") || !type.equals("C"))
 				return false;
 			
-			City departCity = new City(departName, 0, 0); //Departing city has no cost
-			City destCity = new City(destName, cost, time);
+			for (int i = 0; i < mainList.size(); i++) //search for destination
+			{
+				if (mainList.get(i).getFirst().name.equals(destName)) //Found destination
+				{
+					history.push(mainList.get(i).getFirst());
+					
+					//iterate through destination's children
+					for (int j = 0; j < mainList.get(i).size(); j++)
+					{
+						history.push(mainList.get(i).get(j));
+					}
+				}
+			}
 			
 			return true;
 		}
 		
 		return false;
 	}
+	
+	private void findSubPath(City departCity, City destCity)
+	{
+		int index = 0;
+		for (int i = 0; i < mainList.size(); i++)
+		{
+			if (mainList.get(i).getFirst().name.equals(departCity.name))
+			{
+				
+			}
+		}
+	}
+	
 	
 	//For debugging; displays the linkedLists
 	public void displayList()
