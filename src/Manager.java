@@ -13,7 +13,11 @@ public class Manager
 		mainList = new LinkedList<LinkedList<City>>();
 	}
 	
-	//Processes the path from input file
+	/**
+	 * addPath
+	 * Processes the @path from input file.
+	 * @return true if everything succeeds
+	 */
 	public Boolean addPath(String path)
 	{
 		//add the stuff into the respective lists
@@ -24,45 +28,72 @@ public class Manager
 			String destName = args[1];
 			int cost = Integer.parseInt(args[2]);
 			int time = Integer.parseInt(args[3]);
-			City temp = new City(departName, 0, 0); //Departing city has no cost
+			City departCity = new City(departName, 0, 0); //Departing city has no cost
+			City destCity = new City(destName, cost, time);
 			
-			
-			//Determine if mainList already has the city
-			int departIndex = 0 ;
-			boolean found = false;
-			for (int i = 0; i < mainList.size(); i++)
-			{
-				if (!mainList.get(i).isEmpty() && mainList.get(i).getFirst().name.equals(departName)) //departingCity already exists, set temp to destCity.
-				{
-					temp = new City(destName, cost, time);
-					departIndex = i;
-					found = true;
-					break;
-				}
-			}
-			
-			//Add the city
-			if(!found) //If departCity doesn't exist, add it in first
-			{
-				mainList.add(new LinkedList<City>());
-				departIndex = mainList.size() - 1;
-				mainList.get(departIndex).add(temp);
-				
-				//set temp back to destCity
-				temp = new City(destName, cost, time);
-			}
-			//Add destCity
-			mainList.get(departIndex).add(temp); 
+			addCities(departCity, destCity);
 			return true;
 		}
 		
 		return false;
 	}
 	
+	/**
+	 * addCities
+	 * Subfunction for addPath. Adds both cities into mainList
+	 */
+	private void addCities(City departCity, City destCity)
+	{
+		int index = 0 ;
+		boolean found = false;
+		for (int i = 0; i < mainList.size(); i++)
+		{
+			if (!mainList.get(i).isEmpty() && mainList.get(i).getFirst().name.equals(departCity.name)) //departCity already exists, set index
+			{
+				index = i;
+				found = true;
+				break;
+			}
+		}
+		
+		//Add the city
+		if(!found) //If departCity doesn't exist, add it in first
+		{
+			mainList.add(new LinkedList<City>());
+			index = mainList.size() - 1;
+			mainList.get(index).add(departCity);
+		}
+		//Add destCity
+		mainList.get(index).add(destCity);
+		
+		
+		//Same thing as above, but for destCity - Reversed
+		found = false;
+		for (int i = 0; i < mainList.size(); i++)
+		{
+			if (!mainList.get(i).isEmpty() && mainList.get(i).getFirst().name.equals(destCity.name)) //destCity already exists, set index
+			{
+				index = i;
+				found = true;
+				break;
+			}
+		}
+		
+		if (!found)
+		{
+			mainList.add(new LinkedList<City>());
+			index = mainList.size() - 1;
+			mainList.get(index).add(destCity);
+		}
+		mainList.get(index).add(departCity);
+	}
 	
+	public boolean findPaths(String pathRequest)
+	{
+		return false;
+	}
 	
-	
-	//For debugging
+	//For debugging; displays the linkedLists
 	public void displayList()
 	{
 		for(int i = 0; i < mainList.size(); i++)
@@ -73,6 +104,7 @@ public class Manager
 				System.out.print(temp.get(j).name + " -> ");
 			}
 			System.out.println();
+			System.out.println("|");
 		}
 	}
 }
