@@ -19,7 +19,7 @@ public class FlightPlan
 			
 			Manager mgr = new Manager();
 			
-			Scanner scan = new Scanner(inputFile);
+			Scanner scan = new Scanner(inputFile); //read in each line of flight paths
 			int count = scan.nextInt();
 			scan.nextLine();
 			for (int i = 0; i < count; i++)
@@ -33,9 +33,9 @@ public class FlightPlan
 			}
 			scan.close();
 			
-			mgr.displayList(); //debug
+			mgr.displayList(); //debug the flight plaths
 			
-			scan = new Scanner(pathsFile);
+			scan = new Scanner(pathsFile); //read in each line of requested paths
 			count = scan.nextInt();
 			scan.nextLine();
 			for (int i = 0; i < count; i++)

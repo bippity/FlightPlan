@@ -95,20 +95,21 @@ public class Manager
 		{
 			String departName = args[0];
 			String destName = args[1];
-			String type = args[2];
-			if (!type.equals("T") || !type.equals("C"))
+			String sortType = args[2];
+			if (!sortType.equals("T") || !sortType.equals("C"))
 				return false;
 			
 			for (int i = 0; i < mainList.size(); i++) //search for destination
 			{
-				if (mainList.get(i).getFirst().name.equals(destName)) //Found destination
+				if (!mainList.get(i).isEmpty() && mainList.get(i).getFirst().name.equals(destName)) //Found destination
 				{
-					history.push(mainList.get(i).getFirst());
+					City destCity = mainList.get(i).getFirst();
+					history.push(destCity); //adds destination to bottom of history stack. Should be popped out last.
 					
 					//iterate through destination's children
 					for (int j = 0; j < mainList.get(i).size(); j++)
 					{
-						history.push(mainList.get(i).get(j));
+						findSubPath(destCity, mainList.get(i).get(j));
 					}
 				}
 			}
@@ -119,7 +120,7 @@ public class Manager
 		return false;
 	}
 	
-	private void findSubPath(City departCity, City destCity)
+	private void findSubPath(City parentCity, City childCity)
 	{
 		int index = 0;
 		for (int i = 0; i < mainList.size(); i++)
