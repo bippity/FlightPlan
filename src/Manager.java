@@ -88,6 +88,10 @@ public class Manager
 		mainList.get(index).add(departCity);
 	}
 	
+	/**
+	 * Starting from the destination city, go through each of its child cities to find the departCity.
+	 * Do the same thing for each of these child cities. (Recursive)
+	 */
 	public boolean findPaths(String path) //Search backwards. Start from destination.
 	{
 		String[] args = path.split("\\|");
@@ -109,7 +113,9 @@ public class Manager
 					//iterate through destination's children
 					for (int j = 0; j < mainList.get(i).size(); j++)
 					{
-						findSubPath(destCity, mainList.get(i).get(j));
+						LinkedList<City> subList = mainList.get(i); //The destCity's linkedList
+						City destChildCity = subList.get(j);
+						findSubPath(destCity, destChildCity, departName, subList);
 					}
 				}
 			}
@@ -120,14 +126,16 @@ public class Manager
 		return false;
 	}
 	
-	private void findSubPath(City parentCity, City childCity)
+	//Recursive function. Loops through every child in the subList
+	private void findSubPath(City parentCity, City childCity, String targetCityName, LinkedList<City> subList)
 	{
 		int index = 0;
-		for (int i = 0; i < mainList.size(); i++)
+		//Loop through sublist and look for the departCity
+		for (int i = 0; i < subList.size(); i++)
 		{
-			if (mainList.get(i).getFirst().name.equals(departCity.name))
+			if (subList.get(i).name.equals(targetCityName))
 			{
-				
+				history.push(subList.get(i));
 			}
 		}
 	}
